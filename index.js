@@ -1,13 +1,13 @@
 const main = async () => {
-    let axios = require('axios');
+    const axios = require('axios');
     const cheerio = require('cheerio')
-    const token_address = "0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"
-    let config = {
+    const TokenAddress = "0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"
+    const config = {
         method: 'get',
-        url: `https://www.bscscan.com/txs?a=${token_address}`,
+        url: `https://www.bscscan.com/txs?a=${TokenAddress}`,
     };
     let mangalink;
-    const mangalinks = await axios(config).then(function (response) {
+    const RawData = await axios(config).then(function (response) {
         let $ = cheerio.load(response.data)
         let Txn_Hash,Block,DateTime,Time,From,Status,To,Value,Txn_Fee;
         $('tbody > tr > td').each((index, element) => {
@@ -48,8 +48,8 @@ const main = async () => {
         mangalink = {Txn_Hash,Block,DateTime,Time,From,Status,To,Value,Txn_Fee}        
         return mangalink
     })
-    if(mangalinks.Time.indexOf('secs')>=0){
-        console.log(mangalinks)
+    if(RawData.Time.indexOf('secs')>=0){
+        console.log(RawData)
         console.log('แจ้งเตือนได้')
     }else{
         console.log('ไม่ต้องแจ้งเตือน')
